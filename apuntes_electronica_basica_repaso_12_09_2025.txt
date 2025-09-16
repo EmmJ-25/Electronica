@@ -1,0 +1,61 @@
+﻿Transistor: semiconductor que rectifica, amplifica, conmuta, oscila una señal de entrada en otra de salida. 
+*rectificar es convertir una corriente alterna (cambia de direccion periodicamente) en crorriente continua (en una señal unidireccional)
+
+
+Un transistor puede rectificar la corriente alterna en corriente continua eliminando la parte negativa de las oscilaciones. Es decir, si tengo una funcion sinusoidal que describe la corriente y las “olas” negativas las convierto en positivas, paso a tener montañitas. Eso lo puedo hacer con un puente de transistores, y si ademas conecto un condensador, que me (almacene  suavice) puedo ya obtener la funcion continua de la corriente. 
+
+
+Ademas, los condensadores junto con las resistencias pueden formar un temporizador para poder integrarlo en la construccion de un microcontrolador. Temporizadores RC/LC y cristal. Cristal es el temportizador del microcontrolador. El cristal marca la frecuencia base del reloj del sistema. Si tengo un controlador cuya cristal es de 20Mhz y las instrucciones tardan en ejecutarse 4ciclos de reloj, entonces el microcontrolador ejecuta 5millones de instrucciones por segundo
+Un cristal, llamado en el ambit,  es una piececita de cuarzo cortada de una forma que sometida a una tension electrica esta vibre y genere una tensión electrica a la frecuencia natural del cuarzo→ Efecto piezoeléctrico. Esta vibración es mecanicamente estable y es lo que llamamos la oscilacion del cristal
+
+
+Baudrate. Baud es una medida de velocidad y quiere decir la cantidad de simbolos por segundo que se transmiten en un bus de comunicación. El baudrate no siempre es evidente que vaya con el reloj principarl. Ya que
+UART es modulo de comunicacion en serie Asincrono para la comunicacion de componentes y no siempre esta determinado por el reloj interno. solo en microcontroladores con oscilador dedicado. Para determinar el baudrate se saca matemáticamente del reloj y de esta forma no hay errores en la transmision. Lo que es importante para sistemas de control y por ello se eligen  osciladores o relojes de cristales raros cuya frecuencia permita el menor error posible
+
+
+el cuarzo en el contexto del tiempo en los microprocesadores o microcontroladores es distinto al cuarzo de las EPROM, ya que aqui solo se usa para la ventana transparente para el borrado de la memoria liberando los electrones con UV
+
+
+VOLVIENDO A LOS TRANSISTORES
+Son amplificadores e interruptores del paso de la corriente. Convierten señal debil en una señal mas potente, o interrumpen el paso de esta corriente. Tienen tres partes: base, colector y emisor    → 3 estados: activo (parte de la corriente), en corte (nada de la corriente)y en saturacion(toda la corriente)
+La corriente entra por el emisor y sale por el caudal, entre estas la base regula, la cual esta alimentada por una pequeña fuente
+
+
+sigo sin entender muy bien el funcionamiento de los transistores en los circuitos, mas alla de que se utilizan para manipular la corriente. 
+
+
+Los transistores pueden ser entre otros: bipolares y MOSFET. 
+Hablando dentro de los chips o microchips los transistores ayudan a “apagar y encender” los distintos componentes gracias a señales electricas que manipulan el transistor para que deje pasar la corriente o no. Tambien sirven para configurar las puertas logicas. Una puerta NOT se construye con dos transistores
+
+
+
+
+HACER UNA UNIDADES DE PROCESAMIENTO CENTRAL CPU
+* transistor, que sirven para hacer las puertas logicas
+* puertas logicas
+* Decodificador
+* flipflop: almacenan info. T FlipFlop Cuando le pasas una señal se enciende. Y si le pasas otravez la misma señal y esta encendido pasa a estar apagado. Va con reloj en subida (aunque creo que esto dependeq)
+* contador→ Contador de Programa para pode sacar la siguiente intruccion
+* de la memoria 
+Diseño de circuitos y componentes VHDL→ https://github.com/logisim-evolution/logisim-evolution/blob/main/README.md
+
+
+
+
+APUNTES DEL IDFDocumentation del ESP32  - [SBC]
+
+
+* Resistencias Pull-up y Pull-down
+la pull-up es cuando la resistencia esta entre VCC y el pin (por donde conectas el input). Aqui el valor del pin es 1.
+la pull-down es cuando la resistencia está entre el pin y el GND. Aqui el valor del pin es 0
+→ sin embargo, no estamos hablando de que los pines tengan las dos resistencias. Sino que el pin esta en estado flotante (alta impadencia), osea no tiene valor ni 0 ni 1 garantizado.
+→ strapping pins, el fabricante decide de antemano cuál lleva pull-up y cuál pull-down por defecto.
+→ Cada pin puede tener internamente una resistencia de pull-up o de pull-down, pero solo una de ellas está “activada” en un momento dado. Esa activación la controlas por software (configuración del pin en el firmware) o bien viene fijada por el fabricante en el caso de los strapping pins. Ejemplo típico: un pin BOOT que si está en 1 arranca desde flash, y si está en 0 entra en modo programación
+
+
+→ no tiene nada que ver con los inputs y outputs, solo con la configuracion del fabricante o que tu hagas. Peeero ⚠️ en la práctica algunos strapping pins conviene no usarlos libremente porque si les pones una conexión externa fija, puedes “romper” la secuencia de arranque.
+→ Ejemplo: GPIO0, GPIO2, GPIO15 en el ESP32 clásico.
+* Host MCU
+MCU es microcontroler Unit. Es para indicar el dispositivo que controla al otro modulo, en este caso una ESP32 a traves de UART. 
+* Joint Download Boot, es para indicar la forma de arranque al chip, le decimos que se va a cargar
+un firmware nuevo en vez de que cargue el programa que tiene en la flash
