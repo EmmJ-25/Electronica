@@ -55,7 +55,20 @@ la pull-down es cuando la resistencia está entre el pin y el GND. Aqui el valor
 
 → no tiene nada que ver con los inputs y outputs, solo con la configuracion del fabricante o que tu hagas. Peeero ⚠️ en la práctica algunos strapping pins conviene no usarlos libremente porque si les pones una conexión externa fija, puedes “romper” la secuencia de arranque.
 → Ejemplo: GPIO0, GPIO2, GPIO15 en el ESP32 clásico.
+
 * Host MCU
 MCU es microcontroler Unit. Es para indicar el dispositivo que controla al otro modulo, en este caso una ESP32 a traves de UART. 
-* Joint Download Boot, es para indicar la forma de arranque al chip, le decimos que se va a cargar
-un firmware nuevo en vez de que cargue el programa que tiene en la flash
+
+* Joint Download Boot, es para indicar la forma de arranque al chip, le decimos que se va a cargar un firmware nuevo en vez de que cargue el programa que tiene en la flash
+
+* FIRMWARE
+el firmware está más “pegado” al hardware, porque es lo que controla directamente los circuitos. En un ESP32: tu código (Arduino, MicroPython, ESP-IDF…) que subes con el IDE se convierte en firmware y se guarda en la memoria flash.
+→ La placa tiene un chip aparte, la memoria flash, que es donde guarda lo que es el programa, y donde estan  tambien el bootloader, OTA …
+-> La forma de arranque del ESP32 es 1. la ROM tiene un progma enmascarado para decirle a la placa como debe funcionar esencialmente, por ejemplo, los strapping pins para determinar el pull down o el pull up. 2. el bootloader busca en la flash y carga tu programa. 3. el bootloader encuentra tu firmware lo mapea a memoria para ejecutarlo
+
+* RESET/ BOOT
+→ Si solo pulsas RESET/EN, arranca normal → ejecuta el firmware que ya tiene grabado.
+→ Si haces la combinación BOOT + RESET, arranca en modo de programación → se queda esperando firmware
+
+
+
